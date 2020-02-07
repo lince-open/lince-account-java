@@ -6,15 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity
 @Table(name = "TB_ACCOUNT")
@@ -30,6 +24,10 @@ public class Account {
     @Column(name = "ID")
     private Long id;
 
+    @Column(name = "TYPE",length = 20)
+    @Enumerated(EnumType.STRING)
+    private AccountType type;
+
     @NotEmpty
     @Column(name = "TITLE",length = 50)
     private String title;
@@ -44,5 +42,8 @@ public class Account {
     @Column(name = "OWNER",length = 50)
     private String owner;
 
-
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BALANCE_ID",referencedColumnName = "ID")
+    private List<AccountBalance> balanceList;
+    
 }
